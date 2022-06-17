@@ -5,7 +5,7 @@ const QuestionsScreen = () => {
     const tempArray =[]
     const [cleanData, setCleanData] = useState([])
     const [correctAns, setCorrectAns] = useState("")
-    const [clickIndex, setClickIndex] = useState("")
+    const [clickIndex, setClickIndex] = useState(0)
 
     const getAllQuestions = () => {
         questions.forEach((item, index) => {
@@ -27,7 +27,7 @@ const QuestionsScreen = () => {
             setCleanData(tempArray)
         })
     }
-    const handleAns = (item, index) => {
+    const handleAns = (index) => {
         const ans = cleanData[index].correct_answer
         setCorrectAns(ans)
     }
@@ -38,8 +38,10 @@ const QuestionsScreen = () => {
     console.log("cleanData", cleanData)
   return (
     <div style={{width: '100%',textAlign: 'center'}}>
+
+        <button disabled={clickIndex === 20} onClick={() =>setClickIndex(clickIndex + 1)}>NEXT</button>
         <div>
-            {
+            {/* {
                 cleanData && cleanData.map((item, index) => (
                     <div>
                         <p style={{fontWeight: 'bold', fontSize: '20px'}}>{item.question}</p>
@@ -55,17 +57,35 @@ const QuestionsScreen = () => {
                                 ))
                             }
                         </p>
-                        <button onClick={() => { handleAns(item, index); setClickIndex(index)}}>Show Answer</button>
-                        {/* {
-                            clickIndex === index && <p style={{fontWeight: 'bold', color: 'green'}}>{correctAns}</p>
-                        } */}
-
-
+                        <button onClick={() => { handleAns(item, index)}}>Show Answer</button>
                     </div>
                 ))
-            }
+            } */}
+            {/* {
+                cleanData && <p>{cleanData[0].question}</p>
+            } */}
+                <div>
+                    <p>QUESTION {clickIndex}/20</p>
+                </div>
+                <p>
+                    {cleanData[clickIndex]?.question}
+                </p>
+                <p>
+                <p>
+                    {
+                            cleanData[clickIndex]?.options.sort(() => Math.random() - 0.5).map((elem, index) => (
+                        <div>
+                            {
+                                correctAns === elem ? <p style={{color: 'green', fontWeight: 'bold'}}>{elem}</p> : <p style={{color: 'red'}}>{elem}</p>
+                            }
 
-            {/* <p>The ANS is {correctAns}</p> */}
+                            
+                        </div>
+                        ))
+                    }
+                    <button onClick={() => { handleAns(clickIndex)}}>Show Answer</button>
+                </p>
+                </p>
         </div>
     </div>
   )

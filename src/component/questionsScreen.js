@@ -1,13 +1,16 @@
 import React, {useEffect, useState} from 'react'
 import questions from '../questions.json'
+import {ProgressBar} from "react-bootstrap"
+
+
 const QuestionsScreen = () => {
 
     const tempArray =[]
     const [cleanData, setCleanData] = useState([])
-    const [correctAns, setCorrectAns] = useState(false)
+    const [correctAns, setCorrectAns] = useState("")
     const [clickYes, setClickYes] = useState(false)
     const [clickIndex, setClickIndex] = useState(0)
-    const [btnIndex, setBtnIndex] = useState(-1)
+    const [score, setScore] = useState(0)
    /*  console.log("co", correctAns) */
     const getAllQuestions = () => {
         questions.forEach((item, index) => {
@@ -31,29 +34,31 @@ const QuestionsScreen = () => {
     }
     const handleAns = (index, elem) => {
         const ans = cleanData[index].correct_answer
-    console.log("ans", ans)
-    console.log("elem", elem)
-        
+        setCorrectAns(ans)
+
         if(elem === ans) {
-            setCorrectAns(true)
-        } else {
-            setCorrectAns(false)
+            setScore(score + 1);
         }
+    
     }
     useEffect(() => {
         getAllQuestions()
     }, [])
-    
-/*     console.log("cleanData", cleanData)
- */  return (
+    console.log("click index", clickIndex)    
+  return (
     <div className='main'>
         <p className='heading'>The Quiz Game</p>
-        <div className='box'>
+
+        {
+            clickIndex === 19 ? 
+            <div className='result' onClick={() => {setClickIndex(0); setScore(0)}}>You scored {score} points </div> : 
+            <div className='box'>
+                {/* <ProgressBar variant="success" now={60} label={60}/> */}
                 <p className='question'>{cleanData[clickIndex]?.question}</p>
                 <div className='options'>
                 {/* sort(() => Math.random() - 0.5) */}
                 {
-                    cleanData[clickIndex]?.options.map((elem, index) => (
+                    cleanData[clickIndex]?.options.sort(() => Math.random() - 0.5).map((elem, index) => (
 /*                         <div onClick={() => { handleAns(clickIndex)}}>
                             {
                             correctAns === elem ? <button className='btn'>{elem}</button> : <button className='btn'>{elem}</button>
@@ -61,24 +66,32 @@ const QuestionsScreen = () => {
                     </div> */
                         <div>
                             <button
-                                 onClick={() => {handleAns(clickIndex, elem); setBtnIndex(index); setClickYes(true)}} 
-                                 className={btnIndex === index ? correctAns ? 'btn-correct' : "btn-wrong" : "btn"}
+                                 onClick={() => {handleAns(clickIndex, elem); setClickYes(true)}} 
+                                 className={clickYes ? correctAns === elem ? 'btn-correct' : "btn-wrong" : "btn"}
                                  disabled ={clickYes}
                                  >
                                     {elem}
 
                             </button> 
+                            
                         </div>
                     ))
                 }
                 </div>
                 <div className='bottom'>
-                    <i className="fas fa-caret-left" onClick={() => {setClickIndex(clickIndex - 1); setBtnIndex(-1); setClickYes(false)}}></i>
+                   {
+                    clickIndex > 0 && 
+                    <i className="fas fa-caret-left" onClick={() => {setClickIndex(clickIndex - 1); setClickYes(false)}}></i>
+                   }
                     <p className='number'><span>{clickIndex+1}</span>/20</p>
-                    <i className="fas fa-caret-right" onClick={() => {setClickIndex(clickIndex+1); setBtnIndex(-1); setClickYes(false)}}></i>
+                    {
+                        clickIndex !== 19 &&
+                        <i className="fas fa-caret-right" onClick={() => {setClickIndex(clickIndex+1); setClickYes(false)}}></i>
+                    }
                 </div>
                 
         </div>
+        }
     </div>
   )
 }

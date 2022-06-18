@@ -37,55 +37,28 @@ const QuestionsScreen = () => {
     
     console.log("cleanData", cleanData)
   return (
-    <div style={{width: '100%',textAlign: 'center'}}>
+    <div className='main'>
+        <p className='heading'>The Quiz Game</p>
+        <div className='box'>
+                <p className='question'>{cleanData[clickIndex]?.question}</p>
+                <div className='options'>
 
-        <button disabled={clickIndex === 20} onClick={() =>setClickIndex(clickIndex + 1)}>NEXT</button>
-        <div>
-            {/* {
-                cleanData && cleanData.map((item, index) => (
-                    <div>
-                        <p style={{fontWeight: 'bold', fontSize: '20px'}}>{item.question}</p>
-                        <p>
+                {
+                    cleanData[clickIndex]?.options.sort(() => Math.random() - 0.5).map((elem, index) => (
+                        <div onClick={() => { handleAns(clickIndex)}}>
                             {
-                                 item?.options.sort(() => Math.random() - 0.5).map((elem, index) => (
-                                <div>
-                                    {
-                                        correctAns === elem ? <p style={{color: 'green', fontWeight: 'bold'}}>{elem}</p> : <p style={{color: 'red'}}>{elem}</p>
-                                    }
-                                    
-                                </div>
-                                ))
-                            }
-                        </p>
-                        <button onClick={() => { handleAns(item, index)}}>Show Answer</button>
+                            correctAns === elem ? <button className='btn'>{elem}</button> : <button className='btn'>{elem}</button>
+                        }                        
                     </div>
-                ))
-            } */}
-            {/* {
-                cleanData && <p>{cleanData[0].question}</p>
-            } */}
-                <div>
-                    <p>QUESTION {clickIndex}/20</p>
+                    ))
+                }
                 </div>
-                <p>
-                    {cleanData[clickIndex]?.question}
-                </p>
-                <p>
-                <p>
-                    {
-                            cleanData[clickIndex]?.options.sort(() => Math.random() - 0.5).map((elem, index) => (
-                        <div>
-                            {
-                                correctAns === elem ? <p style={{color: 'green', fontWeight: 'bold'}}>{elem}</p> : <p style={{color: 'red'}}>{elem}</p>
-                            }
-
-                            
-                        </div>
-                        ))
-                    }
-                    <button onClick={() => { handleAns(clickIndex)}}>Show Answer</button>
-                </p>
-                </p>
+                <div className='bottom'>
+                    <i className="fas fa-caret-left" onClick={() => setClickIndex(clickIndex - 1)}></i>
+                    <p className='number'><span>{clickIndex+1}</span>/20</p>
+                    <i className="fas fa-caret-right" onClick={() => setClickIndex(clickIndex+1)}></i>
+                </div>
+                
         </div>
     </div>
   )

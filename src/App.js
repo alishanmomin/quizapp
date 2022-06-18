@@ -1,10 +1,10 @@
 import React from 'react'
 import QuestionSreen from './component/questionsScreen'
+import '../src/styles/app.scss'
+
 const App = () => {
   return (
-    <div>
         <QuestionSreen />
-    </div>
   )
 }
 
